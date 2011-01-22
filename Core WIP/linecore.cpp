@@ -59,6 +59,7 @@ int CalcVel()
   //Left of line - Right low, all others high
   //Off line - All High 
   //Fork - Left & Right low, middle high
+  //Warning Line ? - All low
   //Fun fun fun.
   
   //On line check. 
@@ -94,6 +95,12 @@ int CalcVel()
     {
       canHasLine=1;
       return 5;
+    }
+
+  else if ((l==0) && (m==0) && (r==0))
+    {
+      canHasLine=1;
+      return 6;
     }
 
   _DEBPRINT("Should not reach here Something died..\n");
