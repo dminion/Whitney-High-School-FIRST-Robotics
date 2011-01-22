@@ -1,6 +1,7 @@
 #include "WPILib.h"
 #include "ADXL345_I2C.h"
 #include <math.h>
+#include "build.h"
 
 float pidstuff = 0;
 Encoder *lolcoder;
@@ -54,7 +55,7 @@ public:
   {
     lolcoder=new Encoder(4,14,4,13);
     ds=DriverStation::GetInstance();
-    printf("Online\n");
+    _DEBPRINT("Online\n");
     leftStick=new Joystick(1);
     rightStick=new Joystick(2);
     //myRobot=new RobotDrive(1,1);
@@ -66,7 +67,7 @@ public:
 	  while (ds->IsEnabled())
 	  {
 	  }
-	  printf("All your base are belong to us.\n");
+	  _DEBPRINT("All your base are belong to us.\n");
   }
   
   void Disabled()
@@ -87,7 +88,7 @@ public:
 			  if (leftStick->GetButton(Joystick::kTriggerButton))
 			  {
 				  target+=10;
-				  printf("Increasing target to: %d\n", target);
+				  _DEBPRINT("Increasing target to: %d\n", target);
 			  }
 			  bar=0;
 		  }
@@ -100,7 +101,7 @@ public:
 		  if (bar>=3000)
 		  {
 			j=c/255.0;
-		  	printf("%f\n",j);
+		  	_DEBPRINT("%f\n",j);
 		  	bar=0;
 		  }
 		  myRobot->Drive(j,0);
@@ -120,12 +121,12 @@ public:
 			  error=-1;
 		  if (bar>=100000)
 		  {
-			  printf("%f\n",error);
+			  _DEBPRINT("%f\n",error);
 			  bar=0;
 			  if (leftStick->GetButton(Joystick::kTriggerButton))
 			  {
 				  target+=10;
-				  printf("Increasing target to: %d\n", target); 
+				  _DEBPRINT("Increasing target to: %d\n", target); 
 			  }
 		  }
 		  speed=(char)((error*128)+128);
@@ -139,7 +140,7 @@ void TimerThread()
 	int target=0;
 	float error=0;
 	char speed=0;
-	printf("---Tim the Second has entered this world---\n");
+	_DEBPRINT("---Tim the Second has entered this world---\n");
 	while (ds->IsEnabled())
 	{
 		Wait(0.01);
@@ -149,19 +150,19 @@ void TimerThread()
 			error=1;
 		if (error<-1)
 			error=-1;
-		printf("%f\n",error);
+		_DEBPRINT("%f\n",error);
 		target+=(int)(leftStick->GetY()*-20);
-		printf("Increasing target to: %d\n", target); 
+		_DEBPRINT("Increasing target to: %d\n", target); 
 		speed=(char)((error*128)+128);
 		motor->SetRaw(speed);
 	}
-	printf("The cake is a lie.\n");
+	_DEBPRINT("The cake is a lie.\n");
 }
 
 void MecanumThread()
 {
 	float x,y;
-	printf("---Mecanum Thread Alive---\n");
+	_DEBPRINT("---Mecanum Thread Alive---\n");
 	flMotor=new PWM(4,1);
 	frMotor=new PWM(4,2);
 	blMotor=new PWM(4,3);
@@ -173,7 +174,7 @@ void MecanumThread()
 		x=leftJoystick->GetX();
 		y=leftJoystick->GetY();
 		ds->SetDigitalOut(4,0);
-		printf("Lines: %d\n",CalcVel());
+		_DEBPRINT("Lines: %d\n",CalcVel());
 		if (fabs(x) < fabs(y))
 		{
 			//forward and reverse
@@ -235,12 +236,12 @@ void MecanumThread()
 		blMotor->SetRaw(blVel);
 		frMotor->SetRaw(frVel);
 		brMotor->SetRaw(blVel);
-		printf("\nX is %f\n", x);
-		printf("Y is %f\n", y);
-		printf("flVel is %d\n", flVel);
-		printf("blVel is %d\n", blVel);
-		printf("frVel is %d\n", frVel);
-		printf("brVel is %d\n", brVel);
+		_DEBPRINT(("\nX is %f\n", x);
+		_DEBPRINT(("Y is %f\n", y);
+		_DEBPRINT(("flVel is %d\n", flVel);
+		_DEBPRINT(("blVel is %d\n", blVel);
+		_DEBPRINT(("frVel is %d\n", frVel);
+		_DEBPRINT(("brVel is %d\n", brVel);
 		/*//forward
 		if (y>=0.1)
 		{

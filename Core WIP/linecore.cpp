@@ -18,12 +18,12 @@ int InitLines()
   righti=new DigitalInput(3);
   if (left!=NULL&&middle!=NULL&&right!=NULL)
   {
-    printf("Line Sensors Setup...\n");
+    _DEBPRINT("Line Sensors Setup...\n");
     return 1;
   }
   else
   {
-      printf("Oh Balls. Something Blew up in the Line Sensors\n");
+      _DEBPRINT("Oh Balls. Something Blew up in the Line Sensors\n");
       return -1;	 
   }
 }
@@ -96,7 +96,7 @@ int CalcVel()
       return 5;
     }
 
-  printf("Should not reach here Something died..\n");
+  _DEBPRINT("Should not reach here Something died..\n");
   return -1;
 }
 
