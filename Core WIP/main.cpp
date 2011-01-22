@@ -27,6 +27,9 @@ void MecanumThread();
 
 #define KP 5 / 1000
 
+extern int InitLines();
+extern int CalcVel();
+
 unsigned char PCntrl(signed int target, signed int current)
 {
 	signed int error = 0;
@@ -164,13 +167,13 @@ void MecanumThread()
 	blMotor=new PWM(4,3);
 	brMotor=new PWM(4,4);
 	leftJoystick=new Joystick(1);
-	
+	InitLines();
 	while (ds->IsEnabled())
 	{
 		x=leftJoystick->GetX();
 		y=leftJoystick->GetY();
 		ds->SetDigitalOut(4,0);
-		
+		printf("Lines: %d\n",CalcVel());
 		if (fabs(x) < fabs(y))
 		{
 			//forward and reverse
