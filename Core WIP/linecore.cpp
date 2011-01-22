@@ -1,8 +1,8 @@
 #include "WPILib.h"
 
-DigitalInput *left;
+DigitalInput *lefti;
 DigitalInput *middle;
-DigitalInput *right;
+DigitalInput *righti;
 float lFRVel=0.f;
 float lFLVel=0.f;
 int canHasLine=0;
@@ -13,9 +13,9 @@ int canHasLine=0;
  */
 int InitLines()
 {
-  left=new DigitalInput(1);
+  lefti=new DigitalInput(1);
   middle=new DigitalInput(2);
-  right=new DigitalInput(3);
+  righti=new DigitalInput(3);
   if (left!=NULL&&middle!=NULL&&right!=NULL)
   {
     printf("Line Sensors Setup...\n");
@@ -49,9 +49,9 @@ int GetRoaming()
 int CalcVel()
 {
   int r,m,l;
-  r=right->Get();
+  r=righti->Get();
   m=middle->Get();
-  l=left->Get();
+  l=lefti->Get();
   
   //Need to check all possibilities on where we are
   //On line - Middle low, all others high
@@ -62,35 +62,35 @@ int CalcVel()
   //Fun fun fun.
   
   //On line check. 
-  if (!m&0x80&&l&0x80&&r&0x80)
+  if ((m==0) && (l==1) && (r==1))
     {
       canHasLine=1;
       return 1;
     }
 
   //Right of line check
-  else if (!l&0x80&&m&0x80&&r&0x80)
+  else if ((l==0) && (m==1) && (r==1))
     {
       canHasLine=1;
       return 2;
     }
 
   //Left of line check
-  else if (!r&0x80&&l&0x80&&m&0x80)
+  else if ((r==0) && (l==1)&& (m==1))
     {
       canHasLine=1;
       return 3;
     }
 
   //Off line check
-  else if (l&0x80&&m&0x80&&r&0x80)
+  else if ((l==1) && (m==1) && (r==1))
     {
       canHasLine=0;
       return 4;
     }
 
   //Fork line check
-  else if (!l&0x80&&m&0x80&&r&0x80)
+  else if ((l==0) && (m==1) && (r==0))
     {
       canHasLine=1;
       return 5;
